@@ -54,11 +54,23 @@ class App extends Component {
                             </div>
                             <p className="help">Enter the url then focus out</p>
                         </div>
+                        <div className="field">
+                            <label className="label">HTML code</label>
+                            <div className="control">
+                                <textarea className="textarea" placeholder="Enter some HTML code ..." value={ this.state.websiteMarkup } onBlur={ e => this.loadCode(e) }></textarea>
+                            </div>
+                            <p className="help">Paste HTML then focus out</p>
+                        </div>
+                        <div className="field">
+                            <label className="label">Preview</label>
+                            <div className="control">
+                                <div id="fakeIFrame"
+                                    style={{ position: "relative", border: "1px solid #444", height: "200px", overflow: "scroll", margin: "20px 0px" }}
+                                    dangerouslySetInnerHTML={{ __html: this.state.websiteMarkup }}></div>
+                            </div>
+                        </div>
                     </div>
                     <div className="container">
-                        <div id="fakeIFrame"
-                            style={{ position: "relative", border: "1px solid #444", height: "200px", overflow: "scroll", margin: "20px 0px" }}
-                            dangerouslySetInnerHTML={{ __html: this.state.websiteMarkup }}></div>
                         { !this.state.model ? null :<TreeView { ...this.state } /> }
                     </div>
                 </section>
@@ -66,27 +78,36 @@ class App extends Component {
         )
     }
 
+    updateModel() {
+        const parser = new DOMParser().parseFromString(this.state.websiteMarkup, "text/html")
+        const model = parser.documentElement
+        formatHTML(model)
+        this.setState({ model: [{ tagName: "HTML", __children: model.__children }] || [] })
+    }
+
     loadWebsite(e) {
         wretch(e.currentTarget.value, { mode: "cors" })
             .get()
             .text(markup => {
-                this.setState({ error: null, websiteMarkup: sanitizeHtml(markup, { allowedTags: false, allowedAttributes: { "*": ["id", "class"] }}) }, () => {
-                    const model = document.getElementById("fakeIFrame")
-                    const recurse = m => {
-                        if(m.children.length > 0) {
-                            m.__children = Array.from(m.children)
-                            m.__children.forEach(recurse)
-                        }
-                    }
-                    recurse(model)
-                    this.setState({ model: [{ tagName: "HTML", __children: model.__children }] || [] })
-                })
+                this.setState({ error: null, websiteMarkup: sanitize(markup) }, this.updateModel)
             })
             .catch(err => {
                 console.error(err)
                 this.setState({ error: err })
             })
 
+    }
+
+    loadCode(e) {
+        this.setState({ error: null, websiteMarkup: sanitize(e.currentTarget.value) }, this.updateModel)
+    }
+}
+
+const sanitize = markup => sanitizeHtml(markup, { allowedTags: false, allowedAttributes: { "*": ["id", "class"] }})
+const formatHTML = elt => {
+    if(elt.children.length > 0) {
+        elt.__children = Array.from(elt.children)
+        elt.__children.forEach(formatHTML)
     }
 }
 
