@@ -1,0 +1,94 @@
+/* Elements */
+.TreeView ul { padding-left: 5px; }
+.TreeView ul > li {
+    box-shadow: 0px 0px 2px #666;
+    display: inline-block;
+    vertical-align: top;
+    padding: 10px 20px;
+    margin: 5px;
+}
+.TreeView ul > li > span.item {
+    font-size: 1em;
+    text-transform: lowercase;
+    transition: all 0.25s;
+}
+.TreeView > input[type="search"] {
+    width: 100%;
+    margin-bottom: 20px;
+    height: 3em;
+    border-width: 2px;
+    transition: border 0.5s;
+    -webkit-appearance: none;
+    -moz-appearance:    none;
+    appearance:         none;
+    border: none;
+    outline: none;
+    border-bottom: 1px solid #444;
+    border-radius: 0;
+    padding: 5px 10px;
+}
+
+/* Root list */
+.TreeView ul.depth-0 {}
+
+/* Not disabled */
+.TreeView ul li:not(.disabled) {}
+.TreeView ul li:not(.disabled) > span.item {}
+
+/* Selected */
+.TreeView ul li.selected {}
+.TreeView ul li.selected > span.item {}
+
+/* Categories : Nodes with children */
+.TreeView ul li.category {}
+.TreeView ul li.category > span.item {
+    font-weight: bolder;
+    display: block;
+    padding: 2px 5px;
+    cursor: pointer;
+}
+.TreeView ul li.category > span.item:hover {
+  background-color: lightgreen;
+}
+/* Folded */
+.TreeView ul li.category.folded {}
+.TreeView ul li.category.folded > span.item {}
+/* Unfolded */
+.TreeView ul li.category:not(.folded) {}
+.TreeView ul li.category:not(.folded) > span.item {
+    margin-bottom: 10px;
+}
+/* Opener */
+.TreeView ul li.category > span.item > .opener {
+    display: inline-block;
+    vertical-align: baseline;
+    margin-left: 5px;
+    cursor: pointer;
+}
+.TreeView ul li.category > span.item > .opener::after {
+    content: '-';
+    display: block;
+    transition: all 0.25s;
+}
+.TreeView ul li.category.folded > span.item > .opener::after {
+    content: '+';
+}
+/* Folded async */
+.TreeView li.category.async {}
+.TreeView li.category.async > span.item {}
+/* Loading async */
+.TreeView li.category.loading {}
+.TreeView li.category.loading > span.item {}
+
+/* Animations on component creation / destruction */
+.TreeViewTransition-enter {}
+.TreeViewTransition-enter-active {}
+.TreeViewTransition-leave {}
+.TreeViewTransition-leave-active {}
+
+/* Drag'n'drop */
+.TreeView ul.dragover {}
+.TreeView li.dragover {}
+.TreeView li.dragover > span.item {}
+.TreeView li.nodrop {}
+.TreeView li.nodrop > span.item {}
