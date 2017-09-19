@@ -27,6 +27,13 @@
     border-radius: 0;
     padding: 5px 10px;
 }
+.TreeView::before {
+    content: 'Note : a query starting with a "." or "#" will perform a css class/id search.';
+    display: block;
+    margin-bottom: 10px;
+    font-size: 0.8em;
+    font-style: italic;
+}
 
 /* Root list */
 .TreeView ul.depth-0 {}

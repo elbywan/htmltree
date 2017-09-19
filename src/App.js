@@ -2,6 +2,7 @@ import React, { Component } from "react"
 import "./App.css"
 
 import { TreeView } from "bosket/react"
+import { array } from "bosket/tools"
 import wretch from "wretch"
 import sanitizeHtml from "sanitize-html"
 
@@ -16,7 +17,9 @@ class App extends Component {
             (_.id ? " #" + _.id : "") +
             ((_.className && _.className.split) ? " ." + _.className.split(" ").join(".") : ""),
         strategies: {
-            fold: [ "opener-control" ],
+            fold: [ function(item) {
+                return array(this.state.get().unfolded).contains(item)
+            } ],
             click: [ "toggle-fold" ]
         },
         labels: {
@@ -45,7 +48,7 @@ class App extends Component {
                     <div className="container">
                     <div className="notification is-warning">You may need a <a href="https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi" target="_blank">plugin</a> to circumvent the CORS policy.</div>
                         { !this.state.error ? null :
-                            <div className="notification is-danger"> { this.state.error.message } </div>
+                            <div className="notification is-danger"> { this.state.error.toString() } </div>
                         }
                         <div className="field">
                             <label className="label">Website url</label>
