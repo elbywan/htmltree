@@ -4,7 +4,7 @@ A **quick and (very) dirty** experiment to display any website html code as a tr
 
 # Demo
 
-https://elbywan.github.io/elbywan/htmltree
+https://elbywan.github.io/htmltree/
 
 ## Uses
 
