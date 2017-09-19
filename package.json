@@ -2,6 +2,11 @@
   "name": "htmltree",
   "version": "0.1.0",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/elbywan/htmltree"
+  },
+  "homepage": "https://elbywan.github.io/htmltree/",
   "dependencies": {
     "bosket": "^0.2.1",
     "react": "^15.6.1",
@@ -15,6 +20,11 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
+  },
+  "devDependencies": {
+    "gh-pages": "^1.0.0"
   }
 }

@@ -2,7 +2,6 @@ import React, { Component } from "react"
 import "./App.css"
 
 import { TreeView } from "bosket/react"
-import { array } from "bosket/tools"
 import wretch from "wretch"
 import sanitizeHtml from "sanitize-html"
 
@@ -44,6 +43,7 @@ class App extends Component {
                 </section>
                 <section className="section">
                     <div className="container">
+                    <div className="notification is-warning">You may need a <a href="https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi" target="_blank">plugin</a> to circumvent the CORS policy.</div>
                         { !this.state.error ? null :
                             <div className="notification is-danger"> { this.state.error.message } </div>
                         }
@@ -52,6 +52,7 @@ class App extends Component {
                             <div className="control">
                                 <input type="text" className="input" onBlur={ e => this.loadWebsite(e) } />
                             </div>
+                            <p className="help">Enter the url then focus out</p>
                         </div>
                     </div>
                     <div className="container">
@@ -66,7 +67,7 @@ class App extends Component {
     }
 
     loadWebsite(e) {
-        wretch(e.currentTarget.value)
+        wretch(e.currentTarget.value, { mode: "cors" })
             .get()
             .text(markup => {
                 this.setState({ error: null, websiteMarkup: sanitizeHtml(markup, { allowedTags: false, allowedAttributes: { "*": ["id", "class"] }}) }, () => {
