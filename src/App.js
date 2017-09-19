@@ -57,7 +57,11 @@ class App extends Component {
                         <div className="field">
                             <label className="label">HTML code</label>
                             <div className="control">
-                                <textarea className="textarea" placeholder="Enter some HTML code ..." value={ this.state.websiteMarkup } onBlur={ e => this.loadCode(e) }></textarea>
+                                <textarea className="textarea" placeholder="Enter some HTML code ..."
+                                    value={ this.state.websiteMarkup }
+                                    onChange={ e => this.setState({ websiteMarkup: e.currentTarget.value })}
+                                    onBlur={ e => this.loadCode(e) }>
+                                </textarea>
                             </div>
                             <p className="help">Paste HTML then focus out</p>
                         </div>
@@ -99,6 +103,8 @@ class App extends Component {
     }
 
     loadCode(e) {
+        if(!e.currentTarget.value)
+            return
         this.setState({ error: null, websiteMarkup: sanitize(e.currentTarget.value) }, this.updateModel)
     }
 }
